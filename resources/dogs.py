@@ -25,3 +25,10 @@ def create_dogs():
     # new_dog = models.Dog.create(name=body['name'], owner=body['owner'], breed=body['breed'])
     dog_data = model_to_dict(new_dog)
     return jsonify(data=dog_data, status={'code': 200, 'message': 'Success'})
+
+##ind show route
+    @dog.route('/<id>, methods=["GET"])')
+    def get_one_dog(id):
+        dog + models.Dog.get_by_id(id)
+        print(dog.__dict__)
+        return jsonify(data=model_to_dict(dog), status={"code": 200, "message":"Success"})
