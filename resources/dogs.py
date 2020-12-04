@@ -32,3 +32,12 @@ def create_dogs():
         dog + models.Dog.get_by_id(id)
         print(dog.__dict__)
         return jsonify(data=model_to_dict(dog), status={"code": 200, "message":"Success"})
+
+
+#update dog
+@dog.route('/<id>', methods=["PUT"])
+def update_dog(id):
+      payload = request.get_json()
+      query = models.Dog.update(**payload).where(models.Dog.id == id)
+      query.execute()
+      return jsonify(data=model_to_dict(models.Dog.get_by_id(id)), status={"code": 200, "message": "resource updated successfully"})
