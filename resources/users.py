@@ -30,4 +30,4 @@ def register():
 
       del user_dict['pasword']
 
-      return jsonify(data=user_dict, status={"code": 201. "message" "Success"})
+      return jsonify(data=user_dict, status={"code": 201, "message": "Success"})

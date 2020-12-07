@@ -42,6 +42,10 @@ CORS(dog, origins=['http://localhost:3000'], supports_credentials=True)
 
 app.register_blueprint(dog, url_prefix='/api/v1/dogs')
 
+################## added these lines
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(user, url_prefix='/user')
+################## added these lines
 
 # routes that we have create
 @app.route('/')
