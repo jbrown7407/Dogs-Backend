@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, g
 from flask_cors import CORS
+from flask_login import LoginManager ############# added this line
 
 import models
 from resources.dogs import dog
