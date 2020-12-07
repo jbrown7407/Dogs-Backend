@@ -1,66 +1,60 @@
 from flask import Flask, jsonify, g
 from flask_cors import CORS
-from flask_login import LoginManager ############# added this line
+from flask_login import LoginManager
 
 import models
 from resources.dogs import dog
-from resources.users import user ############ added this line
-login_manager = LoginManager() # sets up the ability to set up the session
+from resources.users import user
+
+login_manager = LoginManager()
+
 DEBUG = True
 PORT = 8000
 
+# Initialize an instance of the Flask class.
+# This starts the website!
 app = Flask(__name__)
 
-app.secret_key = "LJAKLJLKJJLJKLSDJLKJASD" # Need this to encode the session
-login_manager.init_app(app) # set up the sessions on the app
+app.secret_key = "asdfasdfasdfasdfasdfasdf"
+login_manager.init_app(app)
 
-@login_manager.user_loader # decorator function, that will load the user object whenever we access the session, we can get the user
-# by importing current_user from the flask_login
+@login_manager.user_loader
 def load_user(userid):
-    try:
-        return models.User.get(models.User.id == userid)
-    except models.DoesNotExist:
-        return None
-###################### added these lines
+  try:
+    return models.Users.get(models.Users.id == userid)
+  except models.DoesNotExist:
+    return None
 
-
-# logic for the DB
+# Logic for our database connection
 @app.before_request
 def before_request():
-    """Connect to the database before each request."""
-    g.db = models.DATABASE
-    g.db.connect()
-
+  """Connect to the database before each request."""
+  g.db = models.DATABASE
+  g.db.connect()
 
 @app.after_request
 def after_request(response):
-    """Close the database connection after each request."""
-    g.db.close()
-    return response
+  """Close the db connection after each requewst."""
+  g.db.close()
+  return response
 
-CORS(dog, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(dog, origins='*', supports_credentials=True)
+CORS(user, origins='*', supports_credentials=True)
 
 app.register_blueprint(dog, url_prefix='/api/v1/dogs')
-
-################## added these lines
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
-################## added these lines
 
-# routes that we have create
+# The default URL ends in / ("website-url/").
 @app.route('/')
 def index():
   my_list = ["Hey", "check", "this", "out"]
-  return my_list
-
-@app.route('/json')
-def dog():
-  return jsonify(name="franki", age=8)
+  return my_list[0]
 
 @app.route('/sayhi/<username>')
 def hello(username):
-  return "Hello, {}".format(username)
+  return "Hello {}".format(username)
 
+# Run the app when the program starts!
 if __name__ == '__main__':
   models.initialize()
   app.run(debug=DEBUG, port=PORT)
