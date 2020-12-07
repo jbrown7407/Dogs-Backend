@@ -4,7 +4,7 @@ from flask_login import LoginManager ############# added this line
 
 import models
 from resources.dogs import dog
-from resources.users import users ############ added this line
+from resources.users import user ############ added this line
 login_manager = LoginManager() # sets up the ability to set up the session
 DEBUG = True
 PORT = 8000
