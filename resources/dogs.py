@@ -4,11 +4,11 @@ from flask import Blueprint, jsonify, request
 
 from playhouse.shortcuts import model_to_dict
 
-from flask_login import login_user, current_user
-
+from flask_login import login_required
 dog = Blueprint('dogs', 'dog')
 
 @dog.route('/', methods=["GET"])
+@login_required
 def get_all_dogs():
     try:
         dogs = [model_to_dict(dog) for dog in models.Dog.select()]
