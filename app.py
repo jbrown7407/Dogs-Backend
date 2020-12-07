@@ -4,11 +4,25 @@ from flask_login import LoginManager ############# added this line
 
 import models
 from resources.dogs import dog
-
+from resources.users import users ############ added this line
+login_manager = LoginManager() # sets up the ability to set up the session
 DEBUG = True
 PORT = 8000
 
 app = Flask(__name__)
+
+app.secret_key = "LJAKLJLKJJLJKLSDJLKJASD" # Need this to encode the session
+login_manager.init_app(app) # set up the sessions on the app
+
+@login_manager.user_loader # decorator function, that will load the user object whenever we access the session, we can get the user
+# by importing current_user from the flask_login
+def load_user(userid):
+    try:
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
+###################### added these lines
+
 
 # logic for the DB
 @app.before_request
